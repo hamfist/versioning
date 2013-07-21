@@ -38,21 +38,25 @@ flags to your Go binary:
     This step is the secret sauce that actually makes this work.  First,
     add the vars you'll need.
 
-  ```
+  ```makefile
   REV_VAR := github.com/rafecolton/versioning.RevString
   VERSION_VAR := github.com/rafecolton/versioning.VersionString
   REPO_VERSION := $(shell git describe --always --dirty --tags)
   REPO_REV := $(shell git rev-parse --sq HEAD)
-  GOBUILD_VERSION_ARGS := -ldflags "-X $(REV_VAR) $(REPO_REV) -X $(VERSION_VAR) $(REPO_VERSION)
+  GOBUILD_VERSION_ARGS := -ldflags "-X $(REV_VAR) $(REPO_REV) -X $(VERSION_VAR) $(REPO_VERSION)"
   ```
 
   Then, add the args to your `go install` command.  For example,
   
-  `go install -x $(TARGETS)`
+  ```makefile
+  go install -x $(TARGETS)
+  ```
   
   becomes
   
-  `go install $(GOBUILD_VERSION_ARGS) -x $(TARGETS)`
+  ```makefile
+  go install $(GOBUILD_VERSION_ARGS) -x $(TARGETS)
+  ```
   
 0. Don't forget to include a `go get` command to pull down the required
     library.  
