@@ -3,6 +3,9 @@ versioning
 
 Easy versioning for your Go binaries
 
+:boom: **NOTE: You can use this as a library, but it's so small that you
+probably shouldn't.  Instead, just copy/paste from [this gist](https://gist.github.com/rafecolton/6049826)** :boom:
+
 This library, along with the following instructions, add the following
 flags to your Go binary:
 
