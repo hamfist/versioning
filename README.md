@@ -6,9 +6,9 @@ Easy versioning for your Go binaries
 This library, along with the following instructions, add the following
 flags to your Go binary:
 
-* `--rev`: prints git revision used to build binary
-* `--version`: prints the latest version, determined by either tags or
-  latest commit hash
+* `--rev`: prints the git revision used to build binary
+* `--version`: prints the latest version, determined either by tags or
+  the latest commit hash
 
 
 ## Using the "golang version trick"
@@ -19,7 +19,7 @@ flags to your Go binary:
    import "github.com/rafecolton/versioning"
    ```
 
-0. Add the command line args by adding the following to your `init()` function
+0. Add the command line args by adding the following to your `init()` function in the same `.go` file
 
     ```go
     versioning.Parse()
@@ -40,7 +40,7 @@ flags to your Go binary:
   VERSION_VAR := github.com/rafecolton/versioning.VersionString
   REPO_VERSION := $(shell git describe --always --dirty --tags)
   REPO_REV := $(shell git rev-parse --sq HEAD)
-  GOBUILD_VERSION_ARGS := -ldflags "-X $(REV_VAR) $(REPO_REV) -X $(VERSION_VAR) $(REPO_VERSIO
+  GOBUILD_VERSION_ARGS := -ldflags "-X $(REV_VAR) $(REPO_REV) -X $(VERSION_VAR) $(REPO_VERSION)
   ```
 
   Then, add the args to your `go install` command.  For example,
