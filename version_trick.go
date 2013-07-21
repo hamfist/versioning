@@ -11,7 +11,7 @@ var (
 	RevString     string
 )
 
-func Init() {
+func Parse() {
 	progName := path.Base(os.Args[0])
 	for _, arg := range os.Args {
 		if arg == "--version" {
