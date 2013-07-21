@@ -1,4 +1,57 @@
-golang-version-trick
-====================
+versioning
+==========
 
 Easy versioning for your Go binaries
+
+This library, along with the following instructions, add the following
+flags to your Go binary:
+
+* `--rev`: prints git revision used to build binary
+* `--version`: prints the latest version, determined by either tags or
+  latest commit hash
+
+
+## Using the "golang version trick"
+
+0. Import the package into any of your `.go` files
+   
+   ```go
+   import "github.com/rafecolton/versioning"
+   ```
+
+0. Add the command line args by adding the following to your `init()` function
+
+    ```go
+    versioning.Parse()
+    ```
+    
+    **NOTE:** It is not required that this call be made in your `init()` function,
+    but it is strongly recommended.  For it to work correctly, it must be made
+    *before* your call to `flag.Parse()` (or similar), otherwise `flag` will
+    explode due to unrecognized args.
+    
+0. Add the `ldflags` to your `Makefile`
+
+    This step is the secret sauce that actually makes this work.  First,
+    add the vars you'll need.
+
+  ```
+  REV_VAR := github.com/rafecolton/versioning.RevString
+  VERSION_VAR := github.com/rafecolton/versioning.VersionString
+  REPO_VERSION := $(shell git describe --always --dirty --tags)
+  REPO_REV := $(shell git rev-parse --sq HEAD)
+  GOBUILD_VERSION_ARGS := -ldflags "-X $(REV_VAR) $(REPO_REV) -X $(VERSION_VAR) $(REPO_VERSIO
+  ```
+
+  Then, add the args to your `go install` command.  For example,
+  
+  `go install -x $(TARGETS)`
+  
+  becomes
+  
+  `go install $(GOBUILD_VERSION_ARGS) -x $(TARGETS)`
+  
+0. Don't forget to include a `go get` command to pull down the required
+    library.  
+    
+0. `make` and enjoy!
